@@ -1,4 +1,8 @@
-# TerriaJS
+# rede-terriajs
+
+Based on TerriaJS 8.12.2
+
+## TerriaJS
 
 [![Build Status](https://github.com/TerriaJS/terriajs/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/TerriaJS/terriajs/actions/workflows/ci.yml)
 [![NPM Version](https://img.shields.io/npm/v/terriajs)](https://www.npmjs.com/package/terriajs)
