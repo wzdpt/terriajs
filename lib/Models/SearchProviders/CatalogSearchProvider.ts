@@ -1,5 +1,8 @@
 import { autorun, makeObservable, observable, runInAction } from "mobx";
-import { Category, SearchAction } from "../../Core/Analytics/analyticEvents";
+import {
+  Category,
+  SearchAction
+} from "../../Core/AnalyticEvents/analyticEvents";
 import { TerriaErrorSeverity } from "../../Core/TerriaError";
 import GroupMixin from "../../ModelMixins/GroupMixin";
 import ReferenceMixin from "../../ModelMixins/ReferenceMixin";
@@ -127,7 +130,7 @@ export default class CatalogSearchProvider extends CatalogSearchProviderMixin(
   }
 
   protected logEvent(searchText: string) {
-    this.terria.analytics.logEvent(
+    this.terria.analytics?.logEvent(
       Category.search,
       SearchAction.catalog,
       searchText

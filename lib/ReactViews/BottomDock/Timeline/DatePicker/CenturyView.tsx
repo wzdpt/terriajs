@@ -6,10 +6,10 @@ interface CenturyGridProps {
   onSelectCentury: (century: number) => void;
 }
 
-export const CenturyView = ({
+export const CenturyView: React.FC<CenturyGridProps> = ({
   datesObject,
   onSelectCentury
-}: CenturyGridProps) => {
+}) => {
   const centuries = datesObject.index;
   if (datesObject.dates && datesObject.dates.length >= 12) {
     return (

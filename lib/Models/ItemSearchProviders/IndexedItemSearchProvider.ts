@@ -109,8 +109,7 @@ export default class IndexedItemSearchProvider extends ItemSearchProvider {
     } catch (parseError) {
       console.warn(parseError);
       throw new Error(
-        t("indexedItemSearchProvider.errorParsingIndexRoot", { indexRootUrl }),
-        { cause: parseError }
+        t("indexedItemSearchProvider.errorParsingIndexRoot", { indexRootUrl })
       );
     }
   }

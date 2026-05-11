@@ -37,7 +37,10 @@ import Text from "../../Styled/Text";
 import { useTranslation } from "react-i18next";
 import Button from "../../Styled/Button";
 import Box from "../../Styled/Box";
-import { Category, GuideAction } from "../../Core/Analytics/analyticEvents";
+import {
+  Category,
+  GuideAction
+} from "../../Core/AnalyticEvents/analyticEvents";
 
 const GuideProgress = (props) => {
   // doesn't work for IE11
@@ -85,7 +88,7 @@ export const analyticsSetShowGuide = (
       ? GuideAction.open
       : GuideAction.close;
 
-  terria.analytics.logEvent(
+  terria.analytics?.logEvent(
     Category.guide,
     action,
     `At index: ${index}, Guide: ${guideKey}`
@@ -104,7 +107,7 @@ export const GuidePure = ({
 
   const handlePrev = () => {
     const newIndex = currentGuideIndex - 1;
-    terria.analytics.logEvent(
+    terria.analytics?.logEvent(
       Category.guide,
       GuideAction.navigatePrev,
       `New index: ${newIndex}, Guide: ${guideKey}`
@@ -120,7 +123,7 @@ export const GuidePure = ({
     const newIndex = currentGuideIndex + 1;
 
     if (guideData[newIndex]) {
-      terria.analytics.logEvent(
+      terria.analytics?.logEvent(
         Category.guide,
         GuideAction.navigateNext,
         `New index: ${newIndex}, Guide: ${guideKey}`

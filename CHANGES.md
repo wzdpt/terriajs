@@ -2,15 +2,7 @@
 
 #### next release (8.12.3)
 
-- Refactor analytics into `lib/Core/analytics/` module, make `analytics` always defined using `NoopAnalytics` default, and remove auto-detection logic from `Terria`. Analytics instance must now be supplied via `TerriaOptions` or defaults to no-op. ([7817](https://github.com/TerriaJS/terriajs/pull/7817))
-- Upgrade dev dependencies
-  - Upgrade dompurify to version 3.3.3 to resolve security vulnerabilities.
-  - Replace unmaintained jsdom-global with maintained global-jsom.
-  - Upgrade babel packages to latest versions (7.28.0/7.29.0).
-  - Upgrade webpack to version 5.105.4.
-- Upgrade eslint to v10 and migrate to eslint flat config.
-- Update `csv-geo-au` support to include the Australian Mesh Blocks 2021.
-- We no longer start terriajs-server when running `yarn gulp dev` as it is not needed for running tests in the browser with jasmine-browser-runner. If you need terriajs-server, you can start it separately by running `yarn gulp terriajs-server` in another terminal.
+- [The next improvement]
 
 #### 8.12.2 - 2026-03-27
 

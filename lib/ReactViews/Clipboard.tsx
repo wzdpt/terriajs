@@ -34,7 +34,6 @@ const Clipboard: FC<ClipboardProps> = (props) => {
 
   useEffect(() => {
     if (createdMessage && !prevTextRef.current && text) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowCreatedMessage(true);
     }
     prevTextRef.current = text;

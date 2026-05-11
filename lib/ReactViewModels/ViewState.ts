@@ -14,7 +14,7 @@ import {
   Category,
   HelpAction,
   StoryAction
-} from "../Core/Analytics/analyticEvents";
+} from "../Core/AnalyticEvents/analyticEvents";
 import Result from "../Core/Result";
 import triggerResize from "../Core/triggerResize";
 import PickedFeatures from "../Map/PickedFeatures/PickedFeatures";
@@ -714,7 +714,7 @@ export default class ViewState {
 
   @action
   showHelpPanel(): void {
-    this.terria.analytics.logEvent(Category.help, HelpAction.panelOpened);
+    this.terria.analytics?.logEvent(Category.help, HelpAction.panelOpened);
     this.showHelpMenu = true;
     this.helpPanelExpanded = false;
     this.selectedHelpMenuItem = "";
@@ -854,7 +854,7 @@ export default class ViewState {
 
     this.terria.currentViewer.notifyRepaintRequired();
 
-    this.terria.analytics.logEvent(Category.story, StoryAction.runStory);
+    this.terria.analytics?.logEvent(Category.story, StoryAction.runStory);
   }
 
   @computed

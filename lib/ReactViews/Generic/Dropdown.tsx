@@ -66,11 +66,8 @@ const Dropdown = <P extends string = "name", T extends Option<P> = Option<P>>({
     [selectOption, hideList]
   );
 
-  useEffect(() => {
-    const addScrollListeners = (
-      element: Element | null,
-      listeningToSoFar: Element[]
-    ): Element[] => {
+  const addScrollListeners = useCallback(
+    (element: Element | null, listeningToSoFar: Element[]): Element[] => {
       if (!element) return listeningToSoFar;
 
       if (element.scrollHeight > element.clientHeight) {
@@ -82,15 +79,18 @@ const Dropdown = <P extends string = "name", T extends Option<P> = Option<P>>({
         return addScrollListeners(element.parentElement, listeningToSoFar);
       }
       return listeningToSoFar;
-    };
+    },
+    [hideList]
+  );
 
-    const clearListeners = () => {
-      scrollListeners.current.forEach((element) =>
-        element?.removeEventListener("scroll", hideList)
-      );
-      scrollListeners.current = [];
-    };
+  const clearListeners = useCallback(() => {
+    scrollListeners.current.forEach((element) =>
+      element?.removeEventListener("scroll", hideList)
+    );
+    scrollListeners.current = [];
+  }, [hideList]);
 
+  useEffect(() => {
     if (isOpen) {
       scrollListeners.current = addScrollListeners(buttonRef.current, []);
     } else {
@@ -98,7 +98,7 @@ const Dropdown = <P extends string = "name", T extends Option<P> = Option<P>>({
     }
 
     return clearListeners;
-  }, [hideList, isOpen]);
+  }, [addScrollListeners, clearListeners, hideList, isOpen]);
 
   const selectedText = selected?.[textProperty];
 

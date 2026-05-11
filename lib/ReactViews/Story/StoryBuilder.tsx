@@ -27,7 +27,10 @@ import styled, { DefaultTheme, withTheme } from "styled-components";
 import combine from "terriajs-cesium/Source/Core/combine";
 import createGuid from "terriajs-cesium/Source/Core/createGuid";
 import dataStoriesImg from "../../../wwwroot/images/data-stories-getting-started.jpg";
-import { Category, StoryAction } from "../../Core/Analytics/analyticEvents";
+import {
+  Category,
+  StoryAction
+} from "../../Core/AnalyticEvents/analyticEvents";
 import triggerResize from "../../Core/triggerResize";
 import ViewState from "../../ReactViewModels/ViewState";
 import Box from "../../Styled/Box";
@@ -146,7 +149,7 @@ class StoryBuilder extends Component<
       id: _story.id ? _story.id : createGuid()
     };
 
-    this.props.viewState.terria.analytics.logEvent(
+    this.props.viewState.terria.analytics?.logEvent(
       Category.story,
       StoryAction.saveStory,
       JSON.stringify(story)

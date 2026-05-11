@@ -25,7 +25,6 @@ module.exports = function () {
       extensions: [".ts", ".js", ".jsx", ".tsx", ".json"]
     },
     externals: {
-      jsdom: "commonjs jsdom",
       vue: "vue"
     },
     plugins: [

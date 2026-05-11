@@ -10,7 +10,7 @@ export default function patchNetworkRequests(
   logFailedRequest: boolean = false
 ) {
   // Overwrite browser APIs (eg XMLHttpRequest and fetch)
-  require("global-jsdom")(undefined, {
+  require("jsdom-global")(undefined, {
     url: baseUrl
   });
 

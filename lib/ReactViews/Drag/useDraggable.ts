@@ -1,21 +1,26 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useDraggable = (options?: { handleSelector?: string }) => {
-  const nodeRef = useRef<HTMLElement | null>(null);
+  const [node, setNode] = useState<HTMLElement | null>();
   // Use refs to track current values without triggering rerenders
   const dxRef = useRef(0);
   const dyRef = useRef(0);
   const handleSelectorRef = useRef(options?.handleSelector);
 
+  // Update the ref if the handleSelector option changes
   useEffect(() => {
     handleSelectorRef.current = options?.handleSelector;
   }, [options?.handleSelector]);
 
+  const ref = useCallback((nodeEle: HTMLElement | null) => {
+    setNode(nodeEle);
+  }, []);
+
   // Function to calculate bounds
   const calculateBounds = useCallback(() => {
-    if (!nodeRef.current) return null;
+    if (!node) return null;
 
-    const parent = nodeRef.current.parentElement;
+    const parent = node?.parentElement;
     if (!parent) return null;
 
     return {
@@ -24,14 +29,14 @@ export const useDraggable = (options?: { handleSelector?: string }) => {
       minY: parent.offsetTop,
       maxY: parent.offsetTop + parent.offsetHeight
     };
-  }, []);
+  }, [node]);
 
   // Function to constrain element within bounds
   // Uses direct DOM manipulation to avoid React state batching delays
   const constrainToBounds = useCallback(() => {
-    if (!nodeRef.current) return;
+    if (!node) return;
 
-    const elementRect = nodeRef.current.getBoundingClientRect();
+    const elementRect = node.getBoundingClientRect();
     const bounds = calculateBounds();
     if (!bounds) return;
 
@@ -51,41 +56,43 @@ export const useDraggable = (options?: { handleSelector?: string }) => {
     );
 
     // Directly update the DOM for immediate visual effect
-    nodeRef.current.style.transform = `translate3d(${constrainedDx}px, ${constrainedDy}px, 0)`;
+    node.style.transform = `translate3d(${constrainedDx}px, ${constrainedDy}px, 0)`;
 
     // Update refs to track current position
     dxRef.current = constrainedDx;
     dyRef.current = constrainedDy;
-  }, [calculateBounds]);
+  }, [node, calculateBounds]);
 
   // Function to check if the event target is the handle or within the handle
   const isValidDragHandle = useCallback(
     (target: EventTarget | null): boolean => {
-      if (!handleSelectorRef.current || !nodeRef.current || !target)
-        return true;
+      if (!handleSelectorRef.current || !node || !target) return true;
 
       // If we have a handle selector, check if the target matches or is within a matching element
-      const handle = nodeRef.current.querySelector(handleSelectorRef.current);
+      const handle = node.querySelector(handleSelectorRef.current);
       return handle
         ? handle === target || handle.contains(target as Node)
         : false;
     },
-    []
+    [node]
   );
 
   // Shared function to update element position
-  const updateElementPosition = useCallback((dx: number, dy: number) => {
-    if (!nodeRef.current) return;
-    nodeRef.current.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
-    dxRef.current = dx;
-    dyRef.current = dy;
-  }, []);
+  const updateElementPosition = useCallback(
+    (dx: number, dy: number) => {
+      if (!node) return;
+      node.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+      dxRef.current = dx;
+      dyRef.current = dy;
+    },
+    [node]
+  );
 
   // Generic drag start handler
   const startDrag = useCallback(
     (clientX: number, clientY: number) => {
       // Get element dimensions to ensure it stays within bounds
-      const elementRect = nodeRef.current?.getBoundingClientRect();
+      const elementRect = node?.getBoundingClientRect();
       if (!elementRect) return;
 
       // Calculate the offset of the pointer within the element
@@ -113,7 +120,7 @@ export const useDraggable = (options?: { handleSelector?: string }) => {
 
       return { moveHandler, endHandler };
     },
-    [updateElementPosition, constrainToBounds]
+    [node, updateElementPosition, constrainToBounds]
   );
 
   const handleMouseDown = useCallback(
@@ -188,23 +195,16 @@ export const useDraggable = (options?: { handleSelector?: string }) => {
   }, [constrainToBounds]);
 
   useEffect(() => {
+    if (!node) {
+      return;
+    }
+    node.addEventListener("mousedown", handleMouseDown);
+    node.addEventListener("touchstart", handleTouchStart);
     return () => {
-      nodeRef.current?.removeEventListener("mousedown", handleMouseDown);
-      nodeRef.current?.removeEventListener("touchstart", handleTouchStart);
+      node.removeEventListener("mousedown", handleMouseDown);
+      node.removeEventListener("touchstart", handleTouchStart);
     };
-  }, [handleMouseDown, handleTouchStart]);
-
-  const ref = useCallback(
-    (nodeElement: HTMLElement | null) => {
-      nodeRef.current?.removeEventListener("mousedown", handleMouseDown);
-      nodeRef.current?.removeEventListener("touchstart", handleTouchStart);
-
-      nodeElement?.addEventListener("mousedown", handleMouseDown);
-      nodeElement?.addEventListener("touchstart", handleTouchStart);
-      nodeRef.current = nodeElement;
-    },
-    [handleMouseDown, handleTouchStart]
-  );
+  }, [node, handleMouseDown, handleTouchStart]);
 
   return [ref];
 };

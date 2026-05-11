@@ -181,6 +181,7 @@ class MapNavigationBase extends Component<PropTypes> {
       .reverse();
 
     // Ensure we are not showing more composites than we have height for
+    let overflows = false;
     let maxVisible = itemsToShow.length;
     let size = 0;
     if (this.overflows) {
@@ -208,7 +209,7 @@ class MapNavigationBase extends Component<PropTypes> {
       //there is nothing else we can do, we have to show the rest of items as it is.
       return;
     }
-    const overflows = itemsToShow.length > maxVisible;
+    overflows = itemsToShow.length > maxVisible;
     const itemsToCollapseId: string[] = [];
     const activeCollapsible: string[] = [];
     if (overflows) {
@@ -217,6 +218,7 @@ class MapNavigationBase extends Component<PropTypes> {
         size += OVERFLOW_ACTION_SIZE;
         this.overflows = true;
       }
+      maxVisible = maxVisible - pinnedItems.length;
       // first try to collapse inactive items and then active ones if needed
       for (let i = 0; i < possibleToCollapse.length; i++) {
         const item = possibleToCollapse[i];

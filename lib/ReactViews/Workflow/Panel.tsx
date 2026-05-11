@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState } from "react";
+import { ReactNode, FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import isDefined from "../../Core/isDefined";
 import { IButtonProps, RawButton } from "../../Styled/Button";
@@ -28,7 +28,6 @@ export const Panel: FC<PanelProps> = (props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
     if (isDefined(props.isOpen)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsOpen(props.isOpen);
     }
   }, [props.isOpen]);

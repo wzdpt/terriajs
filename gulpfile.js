@@ -1,3 +1,7 @@
+/*eslint-env node*/
+/*eslint no-sync: 0*/
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 "use strict";
 
 // Every module required-in here must be a `dependency` in package.json, not just a `devDependency`,
@@ -292,9 +296,9 @@ serveTests.description =
   "Start jasmine-browser-runner server for interactive testing.";
 serveTests.displayName = "serve-tests";
 
-const dev = gulp.parallel(watch, serveTests);
+const dev = gulp.parallel(terriajsServer, watch, serveTests);
 dev.description =
-  "Watch for source changes, and serve tests with jasmine-browser-runner.";
+  "Start TerriaJS server, watch for source changes, and serve tests.";
 
 const postNpmInstall = copyCesiumAssets;
 postNpmInstall.description = "Copy Cesium assets after installation.";

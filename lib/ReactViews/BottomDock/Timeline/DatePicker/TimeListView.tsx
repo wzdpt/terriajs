@@ -9,11 +9,11 @@ interface TimeListViewProps {
   onTimeSelected: (time: Date) => void;
 }
 
-export const TimeListView = ({
+export const TimeListView: React.FC<TimeListViewProps> = ({
   items,
   dateFormatString,
   onTimeSelected
-}: TimeListViewProps) => {
+}) => {
   if (!isDefined(items)) return null;
 
   return (

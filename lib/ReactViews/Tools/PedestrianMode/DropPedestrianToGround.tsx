@@ -28,7 +28,6 @@ const DropPedestrianToGround: FC<DropPedestrianToGroundProps> = (props) => {
 
   useEffect(function setupEventHandlers() {
     // Pause feature picking while we select a drop point on the map.
-    // eslint-disable-next-line react-hooks/immutability
     cesium.isFeaturePickingPaused = true;
 
     const dropPedestrian = ({
